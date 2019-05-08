@@ -33,12 +33,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Photo.findByPhotoid", query = "SELECT p FROM Photo p WHERE p.photoid = :photoid")})
 public class Photo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Lob
     @Column(name = "data")
     private byte[] data;
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -60,13 +61,6 @@ public class Photo implements Serializable {
         this.data = data;
     }
 
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
 
     public Integer getPhotoid() {
         return photoid;
@@ -107,6 +101,14 @@ public class Photo implements Serializable {
     @Override
     public String toString() {
         return "fit.bestteam.pubster.dl.entity.Photo[ photoid=" + photoid + " ]";
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
     
 }

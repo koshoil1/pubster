@@ -44,6 +44,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Restaurant.findByRestaurantid", query = "SELECT r FROM Restaurant r WHERE r.restaurantid = :restaurantid")})
 public class Restaurant implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "logo")
+    private byte[] logo;
+
     private static final long serialVersionUID = 1L;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
@@ -56,11 +62,6 @@ public class Restaurant implements Serializable {
     @Size(min = 1, max = 150)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "logo")
-    private byte[] logo;
     @Size(max = 500)
     @Column(name = "description")
     private String description;
@@ -125,13 +126,6 @@ public class Restaurant implements Serializable {
         this.name = name;
     }
 
-    public byte[] getLogo() {
-        return logo;
-    }
-
-    public void setLogo(byte[] logo) {
-        this.logo = logo;
-    }
 
     public String getDescription() {
         return description;
@@ -263,6 +257,14 @@ public class Restaurant implements Serializable {
     @Override
     public String toString() {
         return "fit.bestteam.pubster.dl.entity.Restaurant[ restaurantid=" + restaurantid + " ]";
+    }
+
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
     }
     
 }

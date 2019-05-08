@@ -7,9 +7,11 @@ package fit.bestteam.pubster.bl;
 
 import fit.bestteam.pubster.dl.entity.Blog;
 import fit.bestteam.pubster.dl.entity.Board;
+import fit.bestteam.pubster.dl.entity.Boardreservation;
 import fit.bestteam.pubster.dl.entity.Photo;
 import fit.bestteam.pubster.dl.entity.Restaurant;
 import fit.bestteam.pubster.interfaces.bl.UnrestrictedService;
+import fit.bestteam.pubster.interfaces.dl.ReservationProvider;
 import fit.bestteam.pubster.interfaces.dl.RestaurantProvider;
 import fit.bestteam.pubster.pl.JSONobject.common.google.LatLng;
 import fit.bestteam.pubster.pl.JSONobject.common.reservation.JSONTableReservation;
@@ -40,7 +42,9 @@ import javax.ejb.Stateless;
 public class UnrestrictedServiceBean implements UnrestrictedService{
 
     @EJB
-    RestaurantProvider m_Provider;
+    RestaurantProvider m_RestaurantProvider;
+    @EJB
+    ReservationProvider m_ReservationProvider;
     
     @Override
     public JSONGetImageResult GetImage(JSONGetImageData data) {
@@ -49,7 +53,7 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
 
     @Override
     public JSONGetRestaurantsResult GetRestaurants(JSONGetRestaurantsData data) {
-        List<Restaurant> v_all = m_Provider.getAnchored(data.getPosition(), data.getRadius());
+        List<Restaurant> v_all = m_RestaurantProvider.getAnchored(data.getPosition(), data.getRadius());
         List<JSONRestaurantBrief> v_list = new LinkedList<>();
         
         for (Restaurant next : v_all) {
@@ -74,7 +78,7 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
     public JSONGetRestaurantFullResult GetRestaurantFull(JSONGetRestaurantFullData data) {
         JSONRestaurantFull v_res = new JSONRestaurantFull();
         
-        Restaurant v_one = m_Provider.getById(data.getRestaurantID());
+        Restaurant v_one = m_RestaurantProvider.getById(data.getRestaurantID());
         JSONRestaurantBrief v_restaurant = new JSONRestaurantBrief();
         v_restaurant.setDescription(v_one.getDescription());
         v_restaurant.setEmail(v_one.getEmail());
@@ -104,9 +108,14 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
         
         List<JSONTable> v_tables = new LinkedList<>();
         for (Board next : v_one.getBoardList()){
-            v_tables.add(new JSONTable(next.getBoardid(),
-                     next.getTableinformation(), next.getCapacity(),
-                        new JSONTableView(next.getBoardviewList().get(0).getType())));
+            JSONTable v_table = new JSONTable();
+            v_table.setId(next.getBoardid());
+            v_table.setInfo(next.getTableinformation());
+            v_table.setCapacity(next.getCapacity());
+            JSONTableView v_view = new JSONTableView();
+            v_view.setType(next.getBoardviewid().getType());
+            v_table.setView(v_view);
+            v_tables.add(v_table);
         }
         v_res.setTables(v_tables);
         
@@ -115,10 +124,27 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
 
     @Override
     public JSONGetTablesStateResult GetTablesState(JSONGetTablesStateData data) {
+        //TODO Write correct interval overlapping logic !!
         List<JSONTableReservation> v_res = new LinkedList<>();
         
         for (int id : data.getTableIDs()) {
+            JSONTableReservation v_item = new JSONTableReservation();
+            v_item.setId(-1);
+            v_item.setTableID(id);
+            List<Boardreservation> v_list = m_ReservationProvider.getBoardReservations(id);
             
+            int seats = 0;
+            for (Boardreservation reserv : v_list) {
+                long since = reserv.getReservationid().getCreationdate().getTime();
+                long till = since + reserv.getReservationid().getDurationmin() * 60 * 1000;
+                if ((since > data.getSince() && since < data.getSince() + data.getDuration()*60*1000)
+                        || (since < data.getSince() && till > data.getSince() + data.getDuration()*60*1000)
+                        || (till > data.getSince() && till < data.getSince() + data.getDuration()*60*1000)) {
+                    seats += reserv.getNumberofseats();
+                }
+            }
+            v_item.setSeats(seats);
+            v_res.add(v_item);
         }
         
         return new JSONGetTablesStateResult(v_res);

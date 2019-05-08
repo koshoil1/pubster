@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author illia
  */
 @Entity
-@Table(name = "board")
+@Table(name = "board", catalog = "pubster", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Board.findAll", query = "SELECT b FROM Board b")
@@ -54,8 +54,9 @@ public class Board implements Serializable {
     private int capacity;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tableid")
     private List<Boardreservation> boardreservationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "boardid")
-    private List<Boardview> boardviewList;
+    @JoinColumn(name = "boardviewid", referencedColumnName = "boardviewid")
+    @ManyToOne(optional = false)
+    private Boardview boardviewid;
     @JoinColumn(name = "restaurantid", referencedColumnName = "restaurantid")
     @ManyToOne(optional = false)
     private Restaurant restaurantid;
@@ -105,13 +106,12 @@ public class Board implements Serializable {
         this.boardreservationList = boardreservationList;
     }
 
-    @XmlTransient
-    public List<Boardview> getBoardviewList() {
-        return boardviewList;
+    public Boardview getBoardviewid() {
+        return boardviewid;
     }
 
-    public void setBoardviewList(List<Boardview> boardviewList) {
-        this.boardviewList = boardviewList;
+    public void setBoardviewid(Boardview boardviewid) {
+        this.boardviewid = boardviewid;
     }
 
     public Restaurant getRestaurantid() {

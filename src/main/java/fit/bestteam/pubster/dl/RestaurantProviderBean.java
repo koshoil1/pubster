@@ -7,40 +7,31 @@ package fit.bestteam.pubster.dl;
 
 import fit.bestteam.pubster.dl.entity.Restaurant;
 import fit.bestteam.pubster.dl.service.AbstractFacade;
+import fit.bestteam.pubster.dl.service.RestaurantFacade;
 import fit.bestteam.pubster.interfaces.dl.RestaurantProvider;
 import fit.bestteam.pubster.pl.JSONobject.common.google.LatLng;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author illia
  */
 @Stateless
-public class RestaurantProviderBean extends AbstractFacade<Restaurant> implements RestaurantProvider{
+public class RestaurantProviderBean implements RestaurantProvider{
 
-    @PersistenceContext(unitName = "fit.bestteam_pubster_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
-
-    public RestaurantProviderBean() {
-        super(Restaurant.class);
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+    @EJB
+    RestaurantFacade m_Restaurants;
 
     @Override
     public List<Restaurant> getAll() {
-        return super.findAll();
+        return m_Restaurants.findAll();
     }
 
     @Override
     public Restaurant getById(int ID) {
-        return super.find(ID);
+        return m_Restaurants.find(ID);
     }
 
     @Override

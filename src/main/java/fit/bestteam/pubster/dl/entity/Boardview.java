@@ -6,26 +6,28 @@
 package fit.bestteam.pubster.dl.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author illia
  */
 @Entity
-@Table(name = "boardview")
+@Table(name = "boardview", catalog = "pubster", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Boardview.findAll", query = "SELECT b FROM Boardview b")
@@ -43,9 +45,8 @@ public class Boardview implements Serializable {
     @NotNull
     @Column(name = "type")
     private int type;
-    @JoinColumn(name = "boardid", referencedColumnName = "boardid")
-    @ManyToOne(optional = false)
-    private Board boardid;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "boardviewid")
+    private List<Board> boardList;
 
     public Boardview() {
     }
@@ -75,12 +76,13 @@ public class Boardview implements Serializable {
         this.type = type;
     }
 
-    public Board getBoardid() {
-        return boardid;
+    @XmlTransient
+    public List<Board> getBoardList() {
+        return boardList;
     }
 
-    public void setBoardid(Board boardid) {
-        this.boardid = boardid;
+    public void setBoardList(List<Board> boardList) {
+        this.boardList = boardList;
     }
 
     @Override
