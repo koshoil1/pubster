@@ -20,13 +20,13 @@ public class JSONRestaurantBrief {
     private String email;
     private String telephone;
     private LatLng address;
-    private int rating;
+    private float rating;
 
     public JSONRestaurantBrief() {
     }
 
     public JSONRestaurantBrief(int id, String name, String description,
-            String webAddress, String email, String telephone, LatLng address, int rating) {
+            String webAddress, String email, String telephone, LatLng address, float rating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,7 +57,7 @@ public class JSONRestaurantBrief {
         return name;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
@@ -89,7 +89,7 @@ public class JSONRestaurantBrief {
         this.name = name;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

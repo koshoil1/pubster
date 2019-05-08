@@ -246,6 +246,20 @@ public class Restaurant implements Serializable {
         return true;
     }
 
+    public float getRating() {
+        float res = 0;
+        int count = 0;
+        
+        for (Board tbl : boardList) {
+            for (Boardreservation reserv : tbl.getBoardreservationList()) {
+                Ranking rank = reserv.getReservationid().getRankingid();
+                res += rank.getRankstars();
+                count++;
+            }
+        }
+        return res/count;
+    }
+    
     @Override
     public String toString() {
         return "fit.bestteam.pubster.dl.entity.Restaurant[ restaurantid=" + restaurantid + " ]";
