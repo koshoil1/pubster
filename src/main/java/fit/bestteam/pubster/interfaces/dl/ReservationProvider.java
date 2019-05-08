@@ -20,5 +20,6 @@ public interface ReservationProvider {
     public List<Reservation> getAll();
     public List<Boardreservation> getAllBoardReservations();
     public List<Boardreservation> getBoardReservations(int boardID);
+    public void placeReservation(Reservation reservation);
     
 }

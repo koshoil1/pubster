@@ -8,9 +8,11 @@ package fit.bestteam.pubster.bl;
 import fit.bestteam.pubster.dl.entity.Blog;
 import fit.bestteam.pubster.dl.entity.Board;
 import fit.bestteam.pubster.dl.entity.Boardreservation;
+import fit.bestteam.pubster.dl.entity.Customer;
 import fit.bestteam.pubster.dl.entity.Photo;
 import fit.bestteam.pubster.dl.entity.Restaurant;
 import fit.bestteam.pubster.interfaces.bl.UnrestrictedService;
+import fit.bestteam.pubster.interfaces.dl.CustomerProvider;
 import fit.bestteam.pubster.interfaces.dl.ReservationProvider;
 import fit.bestteam.pubster.interfaces.dl.RestaurantProvider;
 import fit.bestteam.pubster.pl.JSONobject.common.google.LatLng;
@@ -21,10 +23,12 @@ import fit.bestteam.pubster.pl.JSONobject.common.restaurant.JSONRestaurantBrief;
 import fit.bestteam.pubster.pl.JSONobject.common.restaurant.JSONRestaurantFull;
 import fit.bestteam.pubster.pl.JSONobject.common.restaurant.JSONTable;
 import fit.bestteam.pubster.pl.JSONobject.common.restaurant.JSONTableView;
+import fit.bestteam.pubster.pl.JSONobject.requestData.JSONDoRegistrationData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetImageData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetRestaurantFullData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetRestaurantsData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetTablesStateData;
+import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONDoRegistrationResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetImageResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetRestaurantFullResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetRestaurantsResult;
@@ -45,6 +49,8 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
     RestaurantProvider m_RestaurantProvider;
     @EJB
     ReservationProvider m_ReservationProvider;
+    @EJB
+    CustomerProvider m_CustomerProvider;
     
     @Override
     public JSONGetImageResult GetImage(JSONGetImageData data) {
@@ -148,5 +154,37 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
         }
         
         return new JSONGetTablesStateResult(v_res);
+    }
+
+    @Override
+    public JSONDoRegistrationResult DoRegistration(JSONDoRegistrationData data) throws Exception{
+        JSONDoRegistrationResult v_res = new JSONDoRegistrationResult();
+        if (!m_CustomerProvider.checkIdentificator(data.getAccount().getEmail())) {
+            v_res.addStatus(JSONDoRegistrationResult.USEDEMAIL);
+        }
+        if (!m_CustomerProvider.checkIdentificator(data.getAccount().getLogin())) {
+            v_res.addStatus(JSONDoRegistrationResult.USEDLOGIN);
+        }
+        if (!m_CustomerProvider.checkIdentificator(data.getAccount().getTelephone())) {
+            v_res.addStatus(JSONDoRegistrationResult.USEDPHONE);
+        }
+        // TODO add check for correct email/phone/login/password
+        if (!v_res.getStatus().isEmpty()) {
+            return v_res;
+        }
+        
+        Customer v_customer = new Customer();
+        v_customer.setEmail(data.getAccount().getEmail());
+        v_customer.setLogin(data.getAccount().getLogin());
+        v_customer.setName(data.getAccount().getName());
+        v_customer.setTelephone(data.getAccount().getTelephone());
+        String v_hashedPWD = Hasher.generateStorngPasswordHash(data.getAccount().getPassword());
+        v_customer.setPassword(v_hashedPWD);
+        
+        m_CustomerProvider.placeCustomer(v_customer);
+        
+        v_res.addStatus(JSONDoRegistrationResult.OK);
+        
+        return v_res;
     }
 }

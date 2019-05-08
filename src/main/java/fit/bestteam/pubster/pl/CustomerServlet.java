@@ -7,11 +7,19 @@ package fit.bestteam.pubster.pl;
 
 import fit.bestteam.pubster.pl.rpcserver.JsonRpcContext;
 import com.googlecode.jsonrpc4j.JsonRpcServer;
+import fit.bestteam.pubster.bl.Hasher;
 import fit.bestteam.pubster.interfaces.bl.CustomerService;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Base64;
+import java.util.StringTokenizer;
+import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJB;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+import javax.security.enterprise.identitystore.DatabaseIdentityStoreDefinition;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +30,14 @@ import javax.servlet.http.HttpServletResponse;
  * @author illia
  */
 @WebServlet(name = "CustomerServlet", urlPatterns = {"/customerapi"})
+@DeclareRoles({"customer", "staff", "manager"})
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"customer"}))
+@BasicAuthenticationMechanismDefinition(realmName="")
+@DatabaseIdentityStoreDefinition(
+        dataSourceLookup = "java:jdbc/pubster",
+        callerQuery = "select password from public.customers where login = ? or email = ? or telephone = ?",
+        groupsQuery = "select 'customer'",
+        hashAlgorithm = Hasher.class)
 public class CustomerServlet extends HttpServlet {
 
     @EJB
@@ -87,7 +103,25 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        JsonRpcContext.set(request);
+        String authHeader = request.getHeader("Authorization");
+        StringTokenizer st = new StringTokenizer(authHeader);
+        String _username = null;
+        if (st.hasMoreTokens()) {
+            String basic = st.nextToken();
+
+            if (basic.equalsIgnoreCase("Basic")) {
+                String credentials = new String(Base64.getDecoder().decode(st.nextToken()), "UTF-8");
+                int p = credentials.indexOf(":");
+                if (p != -1) {
+                    _username = credentials.substring(0, p).trim();
+                } 
+            }
+        }
+        if (_username == null) {
+            processRequest(request, response);
+            return;
+        }
+        JsonRpcContext.set(_username);
         m_jsonRpcServer.handle(request, response);
         JsonRpcContext.unset();
 //        processRequest(request, response);

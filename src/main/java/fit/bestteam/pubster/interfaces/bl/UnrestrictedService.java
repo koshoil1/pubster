@@ -5,10 +5,12 @@
  */
 package fit.bestteam.pubster.interfaces.bl;
 
+import fit.bestteam.pubster.pl.JSONobject.requestData.JSONDoRegistrationData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetImageData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetRestaurantFullData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetRestaurantsData;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONGetTablesStateData;
+import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONDoRegistrationResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetImageResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetRestaurantFullResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetRestaurantsResult;
@@ -21,6 +23,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface UnrestrictedService {
+    
+    public JSONDoRegistrationResult DoRegistration(JSONDoRegistrationData data) throws Exception;
     
     public JSONGetImageResult GetImage(JSONGetImageData data);
     public JSONGetRestaurantsResult GetRestaurants(JSONGetRestaurantsData data);

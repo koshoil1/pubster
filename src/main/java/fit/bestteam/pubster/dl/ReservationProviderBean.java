@@ -22,23 +22,28 @@ import javax.ejb.Stateless;
 public class ReservationProviderBean implements ReservationProvider{
 
     @EJB
-    ReservationFacade v_Reservations;
+    ReservationFacade m_Reservations;
     @EJB
-    BoardReservationFacade v_BoardReservations;
+    BoardReservationFacade m_BoardReservations;
     
     @Override
     public List<Reservation> getAll() {
-        return v_Reservations.findAll();
+        return m_Reservations.findAll();
     }
 
     @Override
     public List<Boardreservation> getAllBoardReservations() {
-        return v_BoardReservations.findAll();
+        return m_BoardReservations.findAll();
     }
 
     @Override
     public List<Boardreservation> getBoardReservations(int boardID) {
-        return v_BoardReservations.getByBoardID(boardID);
+        return m_BoardReservations.getByBoardID(boardID);
+    }
+
+    @Override
+    public void placeReservation(Reservation reservation) {
+        m_Reservations.create(reservation);
     }
 
 }
