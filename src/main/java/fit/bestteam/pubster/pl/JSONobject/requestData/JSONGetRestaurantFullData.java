@@ -11,21 +11,21 @@ package fit.bestteam.pubster.pl.JSONobject.requestData;
  */
 public class JSONGetRestaurantFullData {
     
-    private int id;
+    private int restaurantID;
 
     public JSONGetRestaurantFullData() {
     }
 
-    public JSONGetRestaurantFullData(int id) {
-        this.id = id;
+    public JSONGetRestaurantFullData(int restaurantID) {
+        this.restaurantID = restaurantID;
     }
 
-    public int getId() {
-        return id;
+    public int getRestaurantID() {
+        return restaurantID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRestaurantID(int restaurantID) {
+        this.restaurantID = restaurantID;
     }
     
 }
