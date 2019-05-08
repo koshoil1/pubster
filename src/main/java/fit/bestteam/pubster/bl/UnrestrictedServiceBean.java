@@ -12,6 +12,7 @@ import fit.bestteam.pubster.dl.entity.Restaurant;
 import fit.bestteam.pubster.interfaces.bl.UnrestrictedService;
 import fit.bestteam.pubster.interfaces.dl.RestaurantProvider;
 import fit.bestteam.pubster.pl.JSONobject.common.google.LatLng;
+import fit.bestteam.pubster.pl.JSONobject.common.reservation.JSONTableReservation;
 import fit.bestteam.pubster.pl.JSONobject.common.restaurant.JSONBlog;
 import fit.bestteam.pubster.pl.JSONobject.common.restaurant.JSONPhoto;
 import fit.bestteam.pubster.pl.JSONobject.common.restaurant.JSONRestaurantBrief;
@@ -114,6 +115,12 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
 
     @Override
     public JSONGetTablesStateResult GetTablesState(JSONGetTablesStateData data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<JSONTableReservation> v_res = new LinkedList<>();
+        
+        for (int id : data.getTableIDs()) {
+            
+        }
+        
+        return new JSONGetTablesStateResult(v_res);
     }
 }

@@ -250,14 +250,14 @@ public class Restaurant implements Serializable {
         float res = 0;
         int count = 0;
         
-        for (Board tbl : boardList) {
+        for (Board tbl : getBoardList()) {
             for (Boardreservation reserv : tbl.getBoardreservationList()) {
                 Ranking rank = reserv.getReservationid().getRankingid();
                 res += rank.getRankstars();
                 count++;
             }
         }
-        return res/count;
+        return count > 0 ? res/count : 4;
     }
     
     @Override
