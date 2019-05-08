@@ -13,11 +13,13 @@ import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetImageResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetRestaurantFullResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetRestaurantsResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetTablesStateResult;
+import javax.ejb.Local;
 
 /**
  *
  * @author illia
  */
+@Local
 public interface UnrestrictedService {
     
     public JSONGetImageResult GetImage(JSONGetImageData data);

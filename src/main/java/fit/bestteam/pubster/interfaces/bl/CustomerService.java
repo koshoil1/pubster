@@ -5,18 +5,19 @@
  */
 package fit.bestteam.pubster.interfaces.bl;
 
-import fit.bestteam.pubster.dl.entity.Customer;
 import fit.bestteam.pubster.pl.JSONobject.requestData.JSONDoReservationData;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONDoReservationResult;
 import fit.bestteam.pubster.pl.JSONobject.responseResult.JSONGetActualReservationsResult;
+import javax.ejb.Local;
 
 /**
  *
  * @author illia
  */
+@Local
 public interface CustomerService {
     
-    public JSONDoReservationResult DoReservation(int customerID, JSONDoReservationData data);
-    public JSONGetActualReservationsResult GetActualReservations(int customerID);
+    public JSONDoReservationResult DoReservation(JSONDoReservationData data);
+    public JSONGetActualReservationsResult GetActualReservations();
     
 }
