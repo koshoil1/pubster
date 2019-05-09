@@ -29,15 +29,18 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author illia
  */
-@WebServlet(name = "CustomerServlet", urlPatterns = {"/customerapi"})
-@DeclareRoles({"customer", "staff", "manager"})
-@ServletSecurity(@HttpConstraint(rolesAllowed = {"customer"}))
-@BasicAuthenticationMechanismDefinition(realmName="")
+
+
 @DatabaseIdentityStoreDefinition(
-        dataSourceLookup = "java:jdbc/pubster",
+        dataSourceLookup = "java:app/pubsterNB",
         callerQuery = "select password from public.customers where login = ? or email = ? or telephone = ?",
         groupsQuery = "select 'customer'",
         hashAlgorithm = Hasher.class)
+
+@BasicAuthenticationMechanismDefinition(realmName="Secured API")
+@DeclareRoles({"customer", "staff", "manager"})
+@WebServlet(name = "CustomerServlet", urlPatterns = {"/customerapi"})
+@ServletSecurity(@HttpConstraint(rolesAllowed = "customer"))
 public class CustomerServlet extends HttpServlet {
 
     @EJB

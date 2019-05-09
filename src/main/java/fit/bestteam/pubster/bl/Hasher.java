@@ -13,7 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.security.enterprise.identitystore.PasswordHash;
 
 /**
  *
@@ -21,8 +23,9 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
  * Code was used from:
  * https://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
  */
-public final class Hasher implements Pbkdf2PasswordHash{
-    
+@Stateless
+@LocalBean
+public class Hasher implements PasswordHash{
     
     public static String generateStorngPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
