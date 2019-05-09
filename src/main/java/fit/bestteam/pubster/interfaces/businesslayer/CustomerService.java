@@ -11,13 +11,23 @@ import fit.bestteam.pubster.presentationlayer.JSONobject.responseResult.JSONGetA
 import javax.ejb.Local;
 
 /**
- *
+ * Interface with declared Customer API methods
  * @author illia
  */
 @Local
 public interface CustomerService {
     
+    /**
+     * JSON-RPC Method DoReservation
+     * @param data - JSONDoReservationData parsed from request
+     * @return JSONDoReservationResult - jackson compatible API result
+     */
     public JSONDoReservationResult DoReservation(JSONDoReservationData data);
+
+    /**
+     * JSON-RPC Method GetActualReservations
+     * @return JSONGetActualReservationsResult - jackson compatible API result
+     */
     public JSONGetActualReservationsResult GetActualReservations();
     
 }

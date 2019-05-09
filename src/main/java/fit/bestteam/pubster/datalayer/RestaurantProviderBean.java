@@ -6,7 +6,6 @@
 package fit.bestteam.pubster.datalayer;
 
 import fit.bestteam.pubster.datalayer.entity.Restaurant;
-import fit.bestteam.pubster.datalayer.service.AbstractFacade;
 import fit.bestteam.pubster.datalayer.service.RestaurantFacade;
 import fit.bestteam.pubster.interfaces.datalayer.RestaurantProvider;
 import fit.bestteam.pubster.presentationlayer.JSONobject.common.google.LatLng;
@@ -15,7 +14,8 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
+ * RestaurantProvider implementation
+ * Local Stateless Bean to provide access to Restaurant objects
  * @author illia
  */
 @Stateless
@@ -34,6 +34,12 @@ public class RestaurantProviderBean implements RestaurantProvider{
         return m_Restaurants.find(ID);
     }
 
+    /**
+     * Filters Restaurants near to Anchor
+     * @param anchor
+     * @param radius
+     * @return List of found Restaurants
+     */
     @Override
     public List<Restaurant> getAnchored(LatLng anchor, int radius) {
         return getAll();

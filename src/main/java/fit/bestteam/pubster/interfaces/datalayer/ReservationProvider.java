@@ -11,15 +11,23 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
+ * Interface for Beans, declares necessary methods for accessing Reservation objects
  * @author illia
  */
 @Local
 public interface ReservationProvider {
     
     public List<Reservation> getAll();
+
     public List<Boardreservation> getAllBoardReservations();
+
+    /**
+     * Returns all reservations on certain Table
+     * @param boardID
+     * @return List of found Reservations
+     */
     public List<Boardreservation> getBoardReservations(int boardID);
+
     public Reservation placeReservation(Reservation reservation);
     
 }

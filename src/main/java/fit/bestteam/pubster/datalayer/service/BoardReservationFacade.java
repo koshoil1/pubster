@@ -35,6 +35,11 @@ public class BoardReservationFacade extends AbstractFacade<Boardreservation>{
         return em;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public List<Boardreservation> getByBoardID(int id) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Boardreservation> query = builder.createQuery(Boardreservation.class);

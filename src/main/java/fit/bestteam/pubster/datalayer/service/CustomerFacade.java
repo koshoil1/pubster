@@ -36,6 +36,11 @@ public class CustomerFacade extends AbstractFacade<Customer>{
         return em;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public boolean checkIdentificator(String id) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Customer> query = builder.createQuery(Customer.class);
@@ -48,6 +53,11 @@ public class CustomerFacade extends AbstractFacade<Customer>{
         return v_list.isEmpty();
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Customer getByIdentificator(String id) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Customer> query = builder.createQuery(Customer.class);

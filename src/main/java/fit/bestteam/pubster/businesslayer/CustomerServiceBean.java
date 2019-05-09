@@ -25,7 +25,8 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
+ * CustomerService implementation
+ * Local, Stateless Bean to provide realization of API methods
  * @author illia
  */
 @Stateless
@@ -76,6 +77,11 @@ public class CustomerServiceBean implements CustomerService{
         return v_res;
     }
     
+    /**
+     * JSON-RPC Method DoReservation
+     * @param data parsed from request
+     * @return JSONDoReservationResult - jackson compatible API result
+     */
     @Override
     public JSONDoReservationResult DoReservation(JSONDoReservationData data) {
         Reservation v_reservation = 
@@ -84,6 +90,10 @@ public class CustomerServiceBean implements CustomerService{
         return new JSONDoReservationResult(parseToJSON(v_reservation));
     }
 
+    /**
+     * JSON-RPC Method GetActualReservations
+     * @return JSONGetActualReservationsResult - jackson compatible API result
+     */
     @Override
     public JSONGetActualReservationsResult GetActualReservations() {
         List<JSONReservation> v_res = new LinkedList<>();

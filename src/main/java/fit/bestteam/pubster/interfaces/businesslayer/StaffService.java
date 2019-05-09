@@ -11,14 +11,26 @@ import fit.bestteam.pubster.presentationlayer.JSONobject.responseResult.JSONGetR
 import javax.ejb.Local;
 
 /**
- *
+ * Interface with declared Staff API methods
  * @author illia
  */
 @Local
 public interface StaffService {
     
+    /**
+     * JSON-RPC Method GetOngoingReservations
+     * returns all reservations somehow actual at given time interval
+     * parsed from JSONGetOngoingReservationsData
+     * @param data - JSONGetOngoingReservationsData parsed from request
+     * @return JSONGetOngoingReservationsResult - jackson compatible API result
+     */
     public JSONGetOngoingReservationsResult
                 GetOngoingReservations(JSONGetOngoingReservationsData data);
+
+    /**
+     * JSON-RPC Method GetRestaurant, returns full info about linked Restaurant
+     * @return JSONGetRestaurantFullResult - jackson compatible API result
+     */
     public JSONGetRestaurantFullResult GetRestaurant();
     
 }

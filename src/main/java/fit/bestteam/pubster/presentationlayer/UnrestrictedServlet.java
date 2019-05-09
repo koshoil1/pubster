@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Handles Unrestricted API
  * @author illia
  */
 @WebServlet(name = "UnrestrictedServlet", urlPatterns = {"/unrestrictedapi"})

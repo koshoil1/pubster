@@ -15,7 +15,8 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
+ * ReservationProvider implementation
+ * Local Stateless Bean to provide access to Reservation objects
  * @author illia
  */
 @Stateless

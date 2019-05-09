@@ -18,7 +18,7 @@ import javax.ejb.Stateless;
 import javax.security.enterprise.identitystore.PasswordHash;
 
 /**
- *
+ * Custom HASHER, used to work with passwords
  * @author illia
  * Code was used from:
  * https://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
@@ -27,6 +27,13 @@ import javax.security.enterprise.identitystore.PasswordHash;
 @LocalBean
 public class Hasher implements PasswordHash{
     
+    /**
+     * Generates strong encrypted password
+     * @param password
+     * @return password salted hash
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
     public static String generateStorngPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
         int iterations = 1000;
@@ -47,6 +54,14 @@ public class Hasher implements PasswordHash{
         return salt;
     }
      
+    /**
+     * Validates password
+     * @param originalPassword
+     * @param storedPassword
+     * @return true if OK
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
     public static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
         String[] parts = storedPassword.split(":");
@@ -89,6 +104,11 @@ public class Hasher implements PasswordHash{
         }
     }
 
+    /**
+     * Method used by BasicHttpAuthentication
+     * @param chars
+     * @return password salted hash
+     */
     @Override
     public String generate(char[] chars) {
         String v_hash = null;
@@ -100,6 +120,12 @@ public class Hasher implements PasswordHash{
         return v_hash;
     }
 
+    /**
+     * Method used by BasicHttpAuthentication
+     * @param chars - bare password to validate
+     * @param string - stored password hash
+     * @return true if verified
+     */
     @Override
     public boolean verify(char[] chars, String string) {
         boolean v_res = false;

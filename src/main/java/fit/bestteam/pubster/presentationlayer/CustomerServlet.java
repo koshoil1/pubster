@@ -7,26 +7,20 @@ package fit.bestteam.pubster.presentationlayer;
 
 import fit.bestteam.pubster.presentationlayer.rpcserver.JsonRpcContext;
 import com.googlecode.jsonrpc4j.JsonRpcServer;
-import fit.bestteam.pubster.businesslayer.Hasher;
 import fit.bestteam.pubster.interfaces.businesslayer.CustomerService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Base64;
 import java.util.StringTokenizer;
-import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJB;
-import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
-import javax.security.enterprise.identitystore.DatabaseIdentityStoreDefinition;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.HttpConstraint;
-import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Handles Customer API
  * @author illia
  */
 

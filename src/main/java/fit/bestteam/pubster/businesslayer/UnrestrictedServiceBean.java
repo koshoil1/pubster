@@ -52,11 +52,21 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
     @EJB
     CustomerProvider m_CustomerProvider;
     
+    /**
+     * JSON-RPC Method GetImage
+     * @param data - JSONGetImageData parsed from request
+     * @return JSONGetImageResult - jackson compatible API result
+     */
     @Override
     public JSONGetImageResult GetImage(JSONGetImageData data) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * JSON-RPC Method GetRestaurants
+     * @param data - JSONGetRestaurantsData parsed from request
+     * @return JSONGetRestaurantsResult - jackson compatible API result
+     */
     @Override
     public JSONGetRestaurantsResult GetRestaurants(JSONGetRestaurantsData data) {
         List<Restaurant> v_all = m_RestaurantProvider.getAnchored(data.getPosition(), data.getRadius());
@@ -80,6 +90,11 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
         return new JSONGetRestaurantsResult(v_list);
     }
 
+    /**
+     * JSON-RPC Method GetRestaurantFull
+     * @param data - JSONGetRestaurantFullData parsed from request
+     * @return JSONGetRestaurantFullResult - jackson compatible API result
+     */
     @Override
     public JSONGetRestaurantFullResult GetRestaurantFull(JSONGetRestaurantFullData data) {
         JSONRestaurantFull v_res = new JSONRestaurantFull();
@@ -128,6 +143,11 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
         return new JSONGetRestaurantFullResult(v_res);
     }
 
+    /**
+     * JSON-RPC Method GetTablesState
+     * @param data - JSONGetTablesStateData parsed from request
+     * @return JSONGetTablesStateResult - jackson compatible API result
+     */
     @Override
     public JSONGetTablesStateResult GetTablesState(JSONGetTablesStateData data) {
         //TODO Write correct interval overlapping logic !!
@@ -156,6 +176,12 @@ public class UnrestrictedServiceBean implements UnrestrictedService{
         return new JSONGetTablesStateResult(v_res);
     }
 
+    /**
+     * JSON-RPC Method DoRegistration, register new Customer
+     * @param data - JSONDoRegistrationData parsed from request
+     * @return JSONDoRegistrationResult - jackson compatible API result
+     * @throws Exception
+     */
     @Override
     public JSONDoRegistrationResult DoRegistration(JSONDoRegistrationData data) throws Exception{
         JSONDoRegistrationResult v_res = new JSONDoRegistrationResult();

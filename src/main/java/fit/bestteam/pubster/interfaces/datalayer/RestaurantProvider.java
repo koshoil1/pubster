@@ -11,14 +11,22 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
+ * Interface for Beans, declares necessary methods for accessing Restaurant objects
  * @author illia
  */
 @Local
 public interface RestaurantProvider {
     
     public List<Restaurant> getAll();
+
+    /**
+     * Filters Restaurants near to Anchor
+     * @param anchor
+     * @param radius
+     * @return List of found Restaurants
+     */
     public List<Restaurant> getAnchored(LatLng anchor, int radius);
+
     public Restaurant getById(int ID);
     
 }
