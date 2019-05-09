@@ -31,16 +31,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 
-@DatabaseIdentityStoreDefinition(
-        dataSourceLookup = "java:app/pubsterNB",
-        callerQuery = "select password from public.customers where login = ? or email = ? or telephone = ?",
-        groupsQuery = "select 'customer'",
-        hashAlgorithm = Hasher.class)
+//@DatabaseIdentityStoreDefinition(
+//        dataSourceLookup = "java:app/pubsterNB",
+//        callerQuery = "select password from public.customers where login = ? or email = ? or telephone = ?",
+//        groupsQuery = "select 'customer'",
+//        hashAlgorithm = Hasher.class)
 
-@BasicAuthenticationMechanismDefinition(realmName="Secured API")
-@DeclareRoles({"customer", "staff", "manager"})
+//@BasicAuthenticationMechanismDefinition(realmName="Secured API")
+//@DeclareRoles({"customer", "staff", "manager"})
 @WebServlet(name = "CustomerServlet", urlPatterns = {"/customerapi"})
-@ServletSecurity(@HttpConstraint(rolesAllowed = "customer"))
+//@ServletSecurity(@HttpConstraint(rolesAllowed = "customer"))
 public class CustomerServlet extends HttpServlet {
 
     @EJB

@@ -42,8 +42,9 @@ public class ReservationProviderBean implements ReservationProvider{
     }
 
     @Override
-    public void placeReservation(Reservation reservation) {
+    public Reservation placeReservation(Reservation reservation) {
         m_Reservations.create(reservation);
+        return reservation;
     }
 
 }

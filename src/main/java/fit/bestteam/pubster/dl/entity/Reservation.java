@@ -62,8 +62,9 @@ public class Reservation implements Serializable {
     private Date since;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 15)
     @Column(name = "state")
-    private int state;
+    private String state;
     @Basic(optional = false)
     @NotNull
     @Column(name = "durationmin")
@@ -89,7 +90,7 @@ public class Reservation implements Serializable {
         this.reservationid = reservationid;
     }
 
-    public Reservation(Integer reservationid, Date creationdate, Date since, int state, int durationmin) {
+    public Reservation(Integer reservationid, Date creationdate, Date since, String state, int durationmin) {
         this.reservationid = reservationid;
         this.creationdate = creationdate;
         this.since = since;
@@ -121,11 +122,11 @@ public class Reservation implements Serializable {
         this.since = since;
     }
 
-    public int getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(String state) {
         this.state = state;
     }
 

@@ -44,7 +44,7 @@ public class CustomerServiceBean implements CustomerService{
         v_res.setCreationdate(new Date());
         v_res.setDurationmin(data.getDuration());
         v_res.setSince(new Date(data.getSince()));
-        v_res.setState(0);
+        v_res.setState(JSONReservation.ACCEPTED);
         
         List<Boardreservation> v_boards = new LinkedList<>();
         for (JSONTableReservation jsonRes : data.getTables()) {
@@ -57,18 +57,44 @@ public class CustomerServiceBean implements CustomerService{
         return v_res;
     }
     
-    @Override
-    public JSONDoReservationResult DoReservation(JSONDoReservationData data) {
+    private JSONReservation parseToJSON(Reservation reservation) {
         JSONReservation v_res = new JSONReservation();
         
-        m_ReservationProvider.placeReservation(prepareFromJSON(data.getReservation()));
+        v_res.setComment(reservation.getComment());
+        v_res.setCreated(reservation.getCreationdate().getTime());
+        v_res.setDuration(reservation.getDurationmin());
+        v_res.setId(reservation.getReservationid());
+        v_res.setSince(reservation.getSince().getTime());
+        v_res.setState(reservation.getState());
+        List<JSONTableReservation> v_tables = new LinkedList<>();
+        for (Boardreservation br: reservation.getBoardreservationList()) {
+            v_tables.add(new JSONTableReservation(br.getTablereservationid(),
+                    br.getTableid().getBoardid(), br.getNumberofseats()));
+        }
+        v_res.setTables(v_tables);
         
-        return new JSONDoReservationResult(v_res);
+        return v_res;
+    }
+    
+    @Override
+    public JSONDoReservationResult DoReservation(JSONDoReservationData data) {
+        Reservation v_reservation = 
+                m_ReservationProvider.placeReservation(prepareFromJSON(data.getReservation()));
+        
+        return new JSONDoReservationResult(parseToJSON(v_reservation));
     }
 
     @Override
     public JSONGetActualReservationsResult GetActualReservations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<JSONReservation> v_res = new LinkedList<>();
+        
+        Customer v_cust = m_CustomerProvider.getByIdentificator(JsonRpcContext.get(0, String.class));
+        
+        for (Reservation reserv: v_cust.getReservationList()) {
+            v_res.add(parseToJSON(reserv));
+        }
+        
+        return new JSONGetActualReservationsResult(v_res);
     }
 
 }

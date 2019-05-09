@@ -13,6 +13,13 @@ import java.util.List;
  */
 public class JSONReservation {
     
+    public static final String WAITING = "WAITING";
+    public static final String ACCEPTED = "ACCEPTED";
+    public static final String RUNNING = "RUNNING";
+    public static final String FINISHED = "FINISHED";
+    public static final String CANCELED = "CANCELED";
+    
+    
     private int id;
     private long created;
     private String comment;
